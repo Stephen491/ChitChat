@@ -1,0 +1,20 @@
+.RegistrationContainer{
+    align-content: center;
+    text-align: center;
+    display: block;
+    
+}
+
+.ErrorContainer{
+    color: white;
+    align-content: center;
+    text-align: center;
+    display: block;
+    background-color: rgb(228, 74, 74);
+    margin: 5%;
+    border-radius: 10px;
+}
+
+.ErrorContainerHidden{
+    display:none;
+}

@@ -1,0 +1,6 @@
+{
+    "component": "registration",
+    "host": "http://localhost:9000/register",
+    "componentLogin": "login",
+    "hostLogin":"http://localhost:9000/login"
+}
