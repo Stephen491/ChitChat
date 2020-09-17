@@ -16,38 +16,44 @@ router.get('/', function(req, res, next) {
     res.send('API is working properly');
 });//end get
 
-router.post('/', function(req, res, next) {
+router.post('/', async function(req, res, next) {
 
     let usernameOrEmailTaken = false;
     let password = req.body.password;
     let hasError = false;
     let emailTaken = false;
     let usernameTaken = false;
+    let email = req.body.email;
    
 
     let findUsernameCommand = 'SELECT * FROM user_accounts_username WHERE username = ?';
 
 
     let findEmailCommand = 'SELECT * FROM user_accounts_email WHERE email = ?';
-
     
-    connection.execute(findUsernameCommand, [req.body.username], function(err, result) {
-
-        if(result.rows[0]) {
-            usernameTaken = true;
-            hasError = true;
-            console.log("Username taken");
-        }
+    let insertCommand; 
     
-    });
-   
-    connection.execute(findEmailCommand, [req.body.email], function(err, result) {
-        if(result.rows[0]) {
-            emailTaken = true;
-            hasError = true;
-            console.log("Email taken");
-        }
-    });
+    await connection.execute(findUsernameCommand, [req.body.username]).then(result => 
+        usernameTaken = result.rows[0]
+        );
+
+    await connection.execute(findEmailCommand, [req.body.email]).then(result => 
+         emailTaken = result.rows[0]
+        );
+
+
+
+
+    if(!emailTaken&&!usernameTaken) {
+        console.log("credentials are OK");
+
+        //TODO: Insert data and response to client
+
+
+
+
+
+    }
 
         /** 
     if(!usernameOrEmailTaken) {
