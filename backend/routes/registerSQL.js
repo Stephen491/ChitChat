@@ -1,16 +1,27 @@
 var express = require('express');
 var router = express.Router();
-var cassandra = require('cassandra-driver');
+var mysql = require('mysql');
 const argon2 = require('argon2');
 require('dotenv').config()
 
 
-var connection = new cassandra.Client({
-    contactPoints: [process.env.CASSANDRA_DB_HOST],
-    localDataCenter: process.env.CASSANDRA_DB_DATACENTER,
-    keyspace: process.env.CASSANDRA_DB_KEYSPACE
-  });
+var connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
+  })
 
+
+  connection.connect(function (err) {
+    if (err) {
+        console.log('ERROR:', err.code);
+        
+    } else {
+        console.log('Connected to DB')
+    }
+});//end connection.connect
 
 router.get('/', function(req, res, next) {
     res.send('API is working properly');
@@ -20,36 +31,14 @@ router.post('/', function(req, res, next) {
 
     let usernameOrEmailTaken = false;
     let password = req.body.password;
-    let hasError = false;
-    let emailTaken = false;
-    let usernameTaken = false;
+    let hasError1 = false;
+    let emailTaken1 = false;
+    let usernameTaken1 = false;
    
+    let command = 'SELECT';
+    command = command.concat(' * FROM useraccounts WHERE username = \'',req.body.username, '\' OR email = \'', req.body.email,'\' ;');
+    console.log(command);
 
-    let findUsernameCommand = 'SELECT * FROM user_accounts_username WHERE username = ?';
-
-
-    let findEmailCommand = 'SELECT * FROM user_accounts_email WHERE email = ?';
-
-    
-    connection.execute(findUsernameCommand, [req.body.username], function(err, result) {
-
-        if(result.rows[0]) {
-            usernameTaken = true;
-            hasError = true;
-            console.log("Username taken");
-        }
-    
-    });
-   
-    connection.execute(findEmailCommand, [req.body.email], function(err, result) {
-        if(result.rows[0]) {
-            emailTaken = true;
-            hasError = true;
-            console.log("Email taken");
-        }
-    });
-
-        /** 
     if(!usernameOrEmailTaken) {
         console.log("ranconditional");
         insertData();
@@ -100,7 +89,6 @@ router.post('/', function(req, res, next) {
         
         }//end catch
     }//insert data function
-    */
 });//end post
 
 module.exports = router;
