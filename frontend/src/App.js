@@ -8,6 +8,7 @@ import RegistrationForm from './Pages/RegistrationForm'
 import LoginForm from './Pages/LoginForm'
 import LobbyPage from './Pages/LobbyPage'
 import ProtectedRoute from './protected.route'
+import { Cookies } from 'react-cookie'
 import ls from 'local-storage'
 import axios from 'axios';
 
@@ -20,6 +21,7 @@ class App extends React.Component {
     }; 
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    axios.defaults.withCredentials = true;
   }
 
   componentDidMount(){
@@ -33,18 +35,20 @@ class App extends React.Component {
     axios.post( 'http://localhost:5000/authenticatetoken', accessTokenData).then(
       (response) => {
         console.log(response);
-
-
-
-
-
-
-
     })
 
+    
+    // Post request to auth server, only call if current access token is expired 
+    axios.post('http://localhost:5000/accesstokenrenewal', {withCredentials: true, headers: {
+      'Access-Control-Allow-Origin': 'http://localhost:5000',
+      'Access-Control-Allow-Credentials': true
+    }}).then((response) => {
+      console.log(response);
+    }).catch((err) => {console.log('err')}) ;
+    
+    
 
-
-  }
+  } 
 
   logout() {
     console.log("logout called")

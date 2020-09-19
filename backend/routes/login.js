@@ -37,17 +37,15 @@ router.post('/', async function(req, res, next) {
         else {
             
             try {
-                console.log(result.rows[0]);
                let dbPasswordHash = result.rows[0].passwordhash; 
                if(await argon2.verify(dbPasswordHash, password)) {
                    //correct password 
-                   console.log("correct password");
                     user = {
                        userid: result.rows[0].id,
                        username: result.rows[0].username,
                        email: emailAddress,
                    }
-                   res.cookie("jid", jwt.sign({user: user}, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' }), {httpOnly: true});
+                   res.cookie("renew_token", jwt.sign({user: user}, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' }), {httpOnly: true});
                    jwt.sign({user: user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' }, (err, token) => {
                           res.json({err: false, notFound: false, wrongPassword: false, accessToken: token});
                     });
@@ -57,7 +55,6 @@ router.post('/', async function(req, res, next) {
                 else{
                      //incorrect password
                     wrongPassword = true;
-                    console.log("incorrect password");
                     response = {err: true, notFound: false, wrongPassword: wrongPassword, token: null};
                     res.json(response);
                 }// end else incorrect password

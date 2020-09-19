@@ -2,6 +2,7 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
+  
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -9,7 +10,7 @@
     "argon2": "^0.27.0",
     "body-parser": "^1.19.0",
     "cassandra-driver": "^4.6.0",
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
@@ -20,4 +21,5 @@
     "morgan": "~1.9.1",
     "mysql": "^2.18.1"
   }
+  
 }
