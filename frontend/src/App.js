@@ -28,24 +28,34 @@ class App extends React.Component {
     console.log(ls.get("accessToken"));
     var accessToken = ls.get("accessToken");
     var accessTokenData = {
-      "accessToken": accessToken,
+      "bearer": accessToken,
     } 
     //TO DO: verify accessToken. If valid, call login method, else continue as non-logged in 
     //If accessToken is expired, make a renewal request using current refresh token
-    axios.post( 'http://localhost:5000/authenticatetoken', accessTokenData).then(
+    axios.post('http://localhost:9000/auth/authenticatetoken', accessTokenData).then(
       (response) => {
         console.log(response);
     })
 
     
     // Post request to auth server, only call if current access token is expired 
-    axios.post('http://localhost:5000/accesstokenrenewal', {withCredentials: true, headers: {
-      'Access-Control-Allow-Origin': 'http://localhost:5000',
+    axios.post('http://localhost:9000/auth/accesstokenrenewal', {withCredentials: true, headers: {
+      'Access-Control-Allow-Origin': 'http://localhost:9000',
       'Access-Control-Allow-Credentials': true
     }}).then((response) => {
       console.log(response);
     }).catch((err) => {console.log('err')}) ;
     
+
+    //testing code; removing later 
+    /** 
+    axios.get('http://localhost:9000/main/',{withCredentials: true, headers: {
+      'Access-Control-Allow-Origin': 'http://localhost:9000',
+      'Access-Control-Allow-Credentials': true
+    }}).then((response) => {
+      console.log(response);
+    }).catch((err) => {console.log('err')}) ;
+    */
     
 
   } 

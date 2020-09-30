@@ -11,10 +11,13 @@ var auth = require('./auth.js');
 
 require('dotenv').config()
 
-router.get('/', auth.verify_token,(req, res) => {
 
-    console.log(req.user);
-    res.send(req.user.user);
+router.use('/', (req, res, next) => {auth.verify_access_token(req, res, next)});
+
+
+router.get('/', (req, res, next) => {
+
+     console.log(req.user);
 } )
 
 module.exports = router;

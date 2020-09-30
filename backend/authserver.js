@@ -92,11 +92,7 @@ auth.post('/login', async function(req, res, next) {
 auth.post('/authenticatetoken', (req, res, next) =>
     {
         //TO DO: Verify user's access token
-        console.log("From authserver token is...");
-        console.log(req.body);
-
-        res.sendStatus(200);
-
+        verify_access_token(req,res,next);
         
 
     }//end function
@@ -118,6 +114,33 @@ auth.post('/accesstokenrenewal', (req, res, next) =>
 
 );//end post
 
+const verify_access_token = (req, res, next) => {
+  console.log("From authserver token is...");
+        console.log(req.body);
+
+        jwt.verify(req.body.accessToken, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
+          if(err instanceof jwt.TokenExpiredError) {
+           //TO DO: Attempt to renew access token using refresh token, if successful, grant access. Else, reject request
+            
+            res.sendStatus(401);
+            
+
+
+
+          }
+          else if(err){
+            res.sendStatus(401).send("Internal Server Error");
+          }
+          else {
+            req.email = decoded.email;
+            req.userid = decoded.userid;
+            req.username = decoded.username;
+            console.log("Access Token Authorized");
+            //next(); 
+          }
+        });
+
+}
 
 function verify_renew_token(renewToken) {
   //TO DO: check the client's renew token to see if it's expired or forbidden
@@ -128,7 +151,7 @@ function verify_renew_token(renewToken) {
   
 }//end verify_renew_token function
 
-
+/** 
 function verify_access_token(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if(typeof bearerHeader!== 'undefined') {
@@ -153,6 +176,7 @@ function verify_access_token(req, res, next) {
       
     }
   }
+  */
 
 module.exports = auth;
   

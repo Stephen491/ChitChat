@@ -14,27 +14,27 @@ var http = require('http');
  */
 
 var port = normalizePort(process.env.PORT || '9000');
-var authPort = normalizePort('5000');
+//var authPort = normalizePort('5000');
 app.set('port', port);
-auth.set('port', authPort);
+//auth.set('port', authPort);
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
-var authServer = http.createServer(auth);
+//var authServer = http.createServer(auth);
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port);
-authServer.listen(authPort);
+//authServer.listen(authPort);
 
 server.on('error', onError);
 server.on('listening', onListening);
-authServer.on('error', onError);
-authServer.on('listening', onListening);
+//authServer.on('error', onError);
+//authServer.on('listening', onListening);
 
 
 /**
