@@ -8,9 +8,11 @@ import RegistrationForm from './Pages/RegistrationForm'
 import LoginForm from './Pages/LoginForm'
 import LobbyPage from './Pages/LobbyPage'
 import ProtectedRoute from './protected.route'
-import { Cookies } from 'react-cookie'
 import ls from 'local-storage'
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
+import Axios from 'axios';
+import auth from './auth';
 
 
 class App extends React.Component {
@@ -25,20 +27,60 @@ class App extends React.Component {
   }
 
   componentDidMount(){
+
+
     console.log(ls.get("accessToken"));
     var accessToken = ls.get("accessToken");
-    var accessTokenData = {
-      "bearer": accessToken,
-    } 
-    //TO DO: verify accessToken. If valid, call login method, else continue as non-logged in 
-    //If accessToken is expired, make a renewal request using current refresh token
-    axios.post('http://localhost:9000/auth/authenticatetoken', accessTokenData).then(
-      (response) => {
+    var accessTokenData = "bearer "
+    accessTokenData = accessTokenData.concat(accessToken)
+    
+
+    /*
+    const authAxios = axios.create({baseURL: 'http://localhost:9000/auth/authenticatetoken'})
+
+    function createAxiosResponseInterceptor() {
+    const interceptor = authAxios.interceptors.response.use(response => response, err => {
+      if(err.response.status!==401) {
+        return Promise.reject(err);
+      }
+      authAxios.interceptors.response.eject(interceptor);
+
+      return axios.post('http://localhost:9000/auth/accesstokenrenewal', {withCredentials: true, headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:9000',
+        'Access-Control-Allow-Credentials': true
+      }}).then((response) => {
+
+        ls.set('accessToken', response.data.accessToken);
+        
         console.log(response);
-    })
+      }).catch((err) => {console.log('err')}).finally(createAxiosResponseInterceptor); ;
+
+      
+
+      })
+    }
+    **/
+    auth.createAxiosResponseInterceptor();
+    auth.authAxios.post('/auth/authenticatetoken', null, {headers: {'authorization': accessTokenData }}).then((response, err) => {
+      console.log(response);
+     
+      if(response.status===200) {
+       this.login();
+       console.log("Access token successfully renewed")
+
+     }
+      
+
+    }).catch((err)=> {console.log("Access Denied")});
+
+    
+    auth.authAxios.interceptors.response.eject();
+
+  
 
     
     // Post request to auth server, only call if current access token is expired 
+    /** 
     axios.post('http://localhost:9000/auth/accesstokenrenewal', {withCredentials: true, headers: {
       'Access-Control-Allow-Origin': 'http://localhost:9000',
       'Access-Control-Allow-Credentials': true
@@ -61,10 +103,30 @@ class App extends React.Component {
   } 
 
   logout() {
-    console.log("logout called")
-    ls.remove("accessToken");
-    this.setState({isAuthenticated: false})
+    var accessToken = ls.get("accessToken");
+    var accessTokenData = "bearer "
+    accessTokenData = accessTokenData.concat(accessToken)
+    
+
+    auth.authAxios.post('/auth/voidrefreshtoken', null, {withCredentials: true, headers: {
+    'authorization': accessTokenData, 
+    'Access-Control-Allow-Origin': 'http://localhost:9000',
+    'Access-Control-Allow-Credentials': true }}).then((response, err) => {
+      console.log(response);
+     
+      if(response.status===200) {
+       ls.remove("accessToken");
+       this.setState({isAuthenticated: false})
+       console.log("refresh token successful delisted")
+
+     }
+      
+    }).catch((err)=> {console.log("Access Denied")});
+
+    
     //TO DO: Make a call to void refresh tokens db to void current refresh token
+    
+
   }
 
   login() {
