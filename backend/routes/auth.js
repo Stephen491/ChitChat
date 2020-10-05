@@ -177,7 +177,7 @@ router.post('/accesstokenrenewal', async (req, res, next) =>
               res.sendStatus(401);
             }
             
-            if(!voidRefreshToken){
+            else{
               user = {
                 email: decoded.user.email,
                 userid: decoded.user.userid,
