@@ -18,7 +18,7 @@ class UsersBar extends React.Component{
 
     render() {
         return( 
-            <div class='container' style={{width: this.props.width, minHeight: this.props.height}}>
+            <div class='container-usersbar'>
                 <React.Fragment>{this.props.children}</React.Fragment>
 
 

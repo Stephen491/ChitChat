@@ -1,0 +1,21 @@
+.roomsbar-container{
+    color: white;
+    margin: 18px;
+    background: linear-gradient(90deg,  rgb(92, 92, 92)  0%, rgb(36, 36, 36) 100%);
+    
+}
+
+.roomcreation-container-active{
+    background-color: lightslategray;
+    position: absolute;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 5% 40%;;
+    align-content: center;
+    z-index: 2;
+}
+
+.roomcreation-container-hidden{
+    display: none;
+    height: 100%;
+}

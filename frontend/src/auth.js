@@ -1,7 +1,4 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
 import ls from 'local-storage'
-import Navbar from './components/Navbar/Navbar'
 import axios from 'axios'
 
 class Auth{

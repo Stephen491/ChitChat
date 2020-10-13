@@ -1,0 +1,10 @@
+.container-usersbar{
+    margin-left: 80%;
+    width: 10%;
+    height: 100%;
+    
+    color: white;
+    text-align: center;
+    background: linear-gradient(90deg, rgb(36, 36, 36) 0%, rgb(92, 92, 92) 100%)
+    
+}

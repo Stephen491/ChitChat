@@ -26,7 +26,6 @@ class Navbar extends React.Component{
         this.setState({authenticated: true})
     }
     logout() {
-        console.log("called");
         this.props.onLogout();
     }
 

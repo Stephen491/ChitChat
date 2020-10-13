@@ -20,6 +20,7 @@ class LoginForm extends React.Component{
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
   handleSubmit(event){
       event.preventDefault();
       let email = this.state.email;
@@ -68,25 +69,28 @@ class LoginForm extends React.Component{
 
   render(){
       return(
-          <div >
+          <div className="login-container">
             <form className="login" onSubmit={this.handleSubmit}>
-                 <h2 className = "form-text">Email Address</h2>
+                <h1 className="title">Login</h1>
+                 <h3 className = "form-text">Email Address</h3>
                  <input 
+                 className="text-input"
                   type="email"
                   name="email"
                   onChange={this.handleChange}
                   value={this.state.email}
                   required
                   ></input>
-                 <h2 className = "form-text">Password</h2>
+                 <h3 className = "form-text">Password</h3>
                  <input 
+                 className="text-input"
                   type="password" 
                   name="password" 
                   onChange={this.handleChange} 
                   value={this.state.password}
                   required>
                  </input>
-                 <button type="submit" >Submit</button>
+                 <button className= "submit-button" type="submit" >Submit</button>
             </form>
           </div>
       );

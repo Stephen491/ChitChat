@@ -8,12 +8,12 @@ class LobbyPage extends React.Component {
     render() {
         return (
             <div className = "lobby-container">
-                <RoomsBar width='50' minHeight='100'>
+                <RoomsBar>
                     <h3>Home</h3>
                     <h3>room2</h3>
                 </RoomsBar>
                 <h1 className="main-chat"> Lobby </h1>
-                <UsersBar width='50' minHeight='100'>
+                <UsersBar>
                     <h3>Person1</h3>
                     <h3>Person2</h3>
                 </UsersBar>

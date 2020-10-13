@@ -1,5 +1,19 @@
 .login{
     align-content: center;
     text-align: center;
-    margin-top: 3rem;
+    
+    color: white;
+    font-size: 23px;
+}
+
+.text-input{
+    background-color: white;
+    height:30px;
+    width: 300px;
+    border-radius: 15px;
+    font-size: 26px;;
+}
+.submit-button{
+    align-content: grid;
+    background-color: white;
 }

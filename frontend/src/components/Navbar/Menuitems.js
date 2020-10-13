@@ -1,22 +1,29 @@
 
 export const menuItems = [
     {
-        title: 'Home',
+        title: 'Login',
         url: "/",
         cName: 'nav-links',
-        authRequired: 'neutral'
+        authRequired: 'no'
 
     },
 
     
     
     {
-        title: 'Lobbies',
+        title: 'Lobby',
         url: "/Lobby",
         cName: 'nav-links',
         authRequired: 'yes'
 
     },
+
+    {   title: 'Messages',
+        url: "/messages",
+        cName: 'nav-links',
+        authRequired: 'yes'
+    },
+
     {
         title: 'Sign up',
         url: "/RegistrationForm",

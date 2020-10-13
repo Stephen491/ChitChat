@@ -1,6 +1,4 @@
-
 import React from 'react';
-import { Router, Route, Link, Switch } from 'react-router'
 import '../App.css';
 import './RegistrationForm.css'
 import axios from 'axios';
